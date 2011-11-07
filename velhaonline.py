@@ -164,6 +164,8 @@ def computerPlayer(board, player):
 def game():
     """The game function"""
     
+    
+    #This section is to estabilish a connection between both computers
     talker = GameCon()           #Cria um objeto socket
     while True:
         print '1. Servidor\n2. Cliente'
@@ -181,6 +183,8 @@ def game():
                 break
             except: print 'Conexao nao aceita'
         
+    #End of this section
+    
     b = Board()
     turn = 1
     while True:
