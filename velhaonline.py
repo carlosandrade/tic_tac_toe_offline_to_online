@@ -33,6 +33,35 @@ Empty = ' '
 Player_X = 'x'
 Player_O = 'o'
 
+
+
+class GameCon:
+    """Classe para cuidar da conexao do jogo"""
+    def __init__(self):
+        self.sock=socket.socket()
+
+    def con(self, ip, port=1911):
+        self.sock.connect((ip, port))
+
+    def waitCon(self, ip='', port=1911, l=1):
+        print socket.gethostbyname(socket.gethostname())
+     	self.sock.bind((ip, port))
+        self.sock.listen(l) 
+        (clientsocket, address) = self.sock.accept()
+        self.sock = clientsocket 
+    
+    def send(self, msg):
+        sent = self.sock.send(msg)
+        if sent == 0:
+            raise BrokenCon, "socket connection broken"
+
+    def receive(self, bytes):
+        return self.sock.recv(bytes)
+
+    def close(self):
+        self.sock.close()
+
+
 class Board:
     """This class represents a tic tac toe board state."""
     def __init__(self):
