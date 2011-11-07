@@ -141,6 +141,11 @@ else:
         except: print 'Conexao nao aceita'
 
 
+if player == 1:
+    flag = 0
+else:
+    flag = 1
+    
 
 
 while True:
@@ -150,24 +155,27 @@ while True:
       #  else:
       #          player =1
         
-        print "\n\n" + board
-        key = playerinput(player)
+        #Eu sou o servidor e espero o cliente fazer a jogada
+        if flag != 0:
+            print "\n\n" + board
+            key = playerinput(player)
         
-        talker.send(key)
+            talker.send(key)
         
-        board,status =moveHandler(board,spaces,checkboard,player,key)
+            board,status =moveHandler(board,spaces,checkboard,player,key)
         
-        if status == 1:
-                print '\n\nPlayer ' + str(player) + ' is the winner!!!'
-                print board
-                break
-        elif len(spaces)==0:
-                print "No more spaces left. Game ends in a TIE!!!"
-                print board
-                break
-
-        print "\n\n" + board
+            if status == 1:
+                    print '\n\nPlayer ' + str(player) + ' is the winner!!!'
+                    print board
+                    break
+            elif len(spaces)==0:
+                    print "No more spaces left. Game ends in a TIE!!!"
+                    print board
+                    break
+            print "\n\n" + board
         
+        flag = 1
+        print "Esperando jogada do seu oponente!"
         hisChoice = talker.receive(1)
         
         #print "valor: "+hisChoice
