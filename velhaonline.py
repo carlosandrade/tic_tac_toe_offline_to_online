@@ -106,6 +106,7 @@ def checkwinner(checkboard,check):
 def  playerinput(player):
         try:
                 key = int(raw_input('\n\nPlayer ' + str(player) + ': Please select a space '))
+#                print "o que esta em key: %d",key
         except ValueError:
                 print "Invalid Space"
                 key = playerinput(player)
@@ -126,10 +127,12 @@ while True:
     if choice == 1 or choice == 2: break
 
 if choice == 1:
+    player = 1
     print 'Esperando conexao...'
     talker.waitCon()
         
 else:
+    player = 2
     while True:
         ip = raw_input('Digite o IP do servidor: ').strip()
         try:
@@ -141,18 +144,16 @@ else:
 
 
 while True:
-        player = len(spaces)%2 +1
-        if player == 1:
-                player = 2
-        else:
-                player =1
+      #  player = len(spaces)%2 +1
+      #  if player == 1:
+      #          player = 2
+      #  else:
+      #          player =1
         
         print "\n\n" + board
         key = playerinput(player)
         
         talker.send(key)
-        hisChoice = talker.receive(1)
-        print 'recebeu'+hisChoice
         
         board,status =moveHandler(board,spaces,checkboard,player,key)
         
@@ -164,5 +165,37 @@ while True:
                 print "No more spaces left. Game ends in a TIE!!!"
                 print board
                 break
+
+        print "\n\n" + board
+        
+        hisChoice = talker.receive(1)
+        
+        #print "valor: "+hisChoice
+        
+        if player == 1:
+            board,status =moveHandler(board,spaces,checkboard,2,int(hisChoice))
         else:
-                continue
+            board,status =moveHandler(board,spaces,checkboard,1,int(hisChoice))
+        
+        if player == 1:
+            if status == 1:
+                    print '\n\nPlayer ' + str(2) + ' is the winner!!!'
+                    print board
+                    break
+            elif len(spaces)==0:
+                    print "No more spaces left. Game ends in a TIE!!!"
+                    print board
+                    break
+            else:
+                    continue
+        else: 
+            if status == 1:
+                    print '\n\nPlayer ' + str(1) + ' is the winner!!!'
+                    print board
+                    break
+            elif len(spaces)==0:
+                    print "No more spaces left. Game ends in a TIE!!!"
+                    print board
+                    break
+            else:
+                    continue
