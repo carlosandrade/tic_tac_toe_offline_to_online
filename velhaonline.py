@@ -23,7 +23,7 @@
 # 
 # Retrieved from: http://en.literateprograms.org/Tic_Tac_Toe_(Python)?oldid=17009
 
-import operator, sys, random, time
+import operator, sys, random, time,socket   
 
 def allEqual(list):
     """returns True if all the elements in a list are equal, or if the list is empty."""
@@ -163,6 +163,24 @@ def computerPlayer(board, player):
 
 def game():
     """The game function"""
+    
+    talker = GameCon()           #Cria um objeto socket
+    while True:
+        print '1. Servidor\n2. Cliente'
+        choice = input('Escolha: ')
+        if choice == 1 or choice == 2: break
+
+    if choice == 1:
+        print 'Esperando conexao...'
+        talker.waitCon()
+    else:
+        while True:
+            ip = raw_input('Digite o IP do servidor: ').strip()
+            try:
+                talker.con(ip)
+                break
+            except: print 'Conexao nao aceita'
+        
     b = Board()
     turn = 1
     while True:
